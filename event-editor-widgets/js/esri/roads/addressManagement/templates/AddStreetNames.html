@@ -1,0 +1,36 @@
+<div style="width:100%; height:100%; overflow:auto;">
+    <div dojoAttachPoint="_panelContainer" dojoType="roads.dijit.layout.TransitionStackContainer" style="width:100%; height:100%;">
+        <!-- Panel 1: network, route, measures, dates -->
+        <div dojoType="dijit.layout.ContentPane">
+            <div style="margin-top:10px;">
+                
+                <table cellspacing="3" cellpadding="0" style="width:100%;">
+                    <tr>
+                        <td nowrap>
+                            <span dojoAttachPoint="_streetNameLabel">${bundle.streetNameLabel}</span>
+                        </td>
+                        <td>
+                            <div dojoAttachPoint="_streetNameInput" dojoType="roads.addressManagement.StreetNameValidationTextBox" type="text" style="width: 100%;">
+                        </td>
+                       
+                    </tr>
+                  
+                </table>
+            </div>
+            
+            <div dojoAttachPoint="_attributeGroupTabs" id="_attributeGroupTabs" dojoType="dijit.layout.ContentPane" style="min-height:200px; margin-bottom:10px;">
+            </div>
+            <div style="margin-top:5px;">
+                <button dojoAttachPoint="_cancelButton" dojoType="dijit.form.Button" dojoAttachEvent="onClick:_cancelEdits" style="float:right;">
+                    ${bundle.cancel}
+                </button>
+            </div>
+            <div style="margin-top:5px;">
+                <button dojoAttachPoint="_saveButton" dojoType="dijit.form.Button" dojoAttachEvent="onClick:_saveEdits" style="float:right;">
+                    ${bundle.save}
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>

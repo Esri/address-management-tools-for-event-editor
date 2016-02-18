@@ -1,0 +1,62 @@
+<div style="width:100%; height:100%; overflow:auto;">
+    <div dojoAttachPoint="_panelContainer" dojoType="roads.dijit.layout.TransitionStackContainer" style="width:100%; height:100%;">
+        <div dojoType="dijit.layout.ContentPane">
+            <div style="margin-top:10px;">
+                <table cellspacing="3" cellpadding="0" style="width:100%;">
+                    <tr>
+                        <td style="padding-left:5px;">
+                            <button dojoAttachPoint="_selectBlockRangeButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton selectBlockRangeIcon" showLabel="false" tabindex="-1" title="${bundle.selectBlockRangeTooltip}">
+                            BlockRange
+                            </button>
+
+                             <button dojoAttachPoint="_addSiteButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton addSiteAddressIcon" showLabel="false" tabindex="-1" title="${bundle.addSiteAddressTooltip}">
+                            Add
+                            </button>
+                            
+                             <button dojoAttachPoint="_addGenericSiteButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton addSiteAddressNoBRIcon" showLabel="false" tabindex="-1" title="${bundle.addGenericSiteAddressTooltip}">
+                            Add
+                            </button>
+
+                            <button dojoAttachPoint="_selectSiteButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton selectSiteAddressIcon" showLabel="false" tabindex="-1" title="${bundle.selectSiteAddressTooltip}">
+                            Select
+                            </button>
+
+                            <button dojoAttachPoint="_deleteSiteButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton delteSiteAddressIcon" dojoAttachEvent="onClick:_onDeleteSiteAddressPoint"   showLabel="false" tabindex="-1" title="${bundle.deleteSiteAddressTooltip}">
+                            Delete
+                            </button>
+                        </td>
+                        <td style="padding-left:5px;">
+                        <div style="padding:3px; float:right">
+                                <label>
+                                    <input dojoAttachPoint="_prorateAddressCheckbox" type="checkbox" dojoType="dijit.form.CheckBox"/>${bundle.prorateAddress}
+                                </label>
+                            </div>
+                            </td>
+                    </tr>
+                </table>
+            </div>
+            <div dojoAttachPoint="_featuresPane" dojoType="dijit.layout.ContentPane" style="height:200px; margin-bottom:10px;border: solid 1px #000;">
+            </div>
+             <div dojoAttachPoint="_attributesScrollPane" style="display:none;">
+            <button dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton resultFirstIcon" showLabel="false" title="${bundle.FirstPage}" dojoAttachPoint="_firstButton" dojoAttachEvent="onClick: _onFirstButtonClick" disabled></button>
+    <button dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton resultPreviousIcon" showLabel="false" title="${bundle.PreviousPage}" dojoAttachPoint="_previousButton" dojoAttachEvent="onClick: _onPreviousButtonClick" disabled></button>   
+    <button dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton resultNextIcon" showLabel="false" title="${bundle.NextPage}" dojoAttachPoint="_nextButton" dojoAttachEvent="onClick: _onNextButtonClick" disabled></button>
+    <button dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton resultLastIcon" showLabel="false" title="${bundle.LastPage}" dojoAttachPoint="_lastButton" dojoAttachEvent="onClick: _onLastButtonClick" disabled></button>
+
+            </div>
+            <div dojoAttachPoint="_attributePane" dojoType="dijit.layout.StackContainer" style="min-height:400px; margin-bottom:10px;">
+            </div>
+            <div style="margin-top:5px;">
+                <button dojoattachpoint="_cancelButton" dojotype="dijit.form.Button" dojoattachevent="onClick:_cancelEdits" style="float:right;">
+                    ${bundle.cancel}
+                </button>
+            </div>
+            <div style="margin-top:5px;">
+                <button dojoattachpoint="_saveButton" dojotype="dijit.form.Button" dojoattachevent="onClick:_saveFeatures" style="float:right;">
+                    ${bundle.save}
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</div>

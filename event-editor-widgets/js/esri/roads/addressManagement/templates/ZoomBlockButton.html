@@ -1,0 +1,10 @@
+<div>
+    <button dojoAttachPoint="_zoomBlockButton" data-dojo-type="dijit/form/DropDownButton" data-dojo-attach-event="onClick:_onZoomBlockClick"
+        iconClass="iconButton zoomIcon" showLabel="false" tabindex="-1" title="${bundle.ZoomRouteTooltip}">
+        <div data-dojo-type="dijit/Menu">
+            <div data-dojo-type="dijit/MenuItem" iconClass="iconButton zoomToRouteExtentIcon" data-dojo-attach-point="_routeExtentItem" data-dojo-attach-event="onClick:_onBlockExtentClick">${bundle.RouteExtent}</div>
+            <div data-dojo-type="dijit/MenuItem" iconClass="iconButton zoomToRouteStartIcon" data-dojo-attach-point="_blockStartItem" data-dojo-attach-event="onClick:_onBlockStartClick">${bundle.RouteStart}</div>
+            <div data-dojo-type="dijit/MenuItem" iconClass="iconButton zoomToRouteEndIcon" data-dojo-attach-point="_blockEndItem" data-dojo-attach-event="onClick:_onBlockEndClick">${bundle.RouteEnd}</div>
+        </div>
+    </button>
+</div>

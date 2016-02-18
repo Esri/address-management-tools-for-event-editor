@@ -1,0 +1,63 @@
+{
+ "blockRangeLayer" : {
+   "layerName" : "AddressBlockRanges", 
+   "rightFromAddressField" : "FROMRIGHT", 
+   "rightToAddressField" : "TORIGHT",
+   "leftFromAddressField" : "FROMLEFT",
+   "leftToAddressField" : "TOLEFT",
+   "fullStreetNameField": "FULLNAME",
+   "copyFields":["CTYROUTE","ONEWAYDIR","ROADLEVEL","INWATER","ROADCLASS","MTFCC","OWNEDBY","MAINTBY","MUNILEFT","MUNIRIGHT","STATELEFT","STATERIGHT","ZIPLEFT","ZIPRIGHT","MSAGLEFT","MSAGRIGHT","ESNLEFT","ESNRIGHT","FEDROUTE","FEDRTETYPE","AFEDRTE","AFEDRTETYPE","STROUTE","STRTETYPE","ASTRTE","ASTRTETYPE"]
+ },
+ 
+ "masterStreetNameTable" : {
+  "tableName" : "Master Street Names",
+  "fullStreetNameField" : "FULLNAME",
+  "attributeMapping":
+  {
+    "MSAGNAME":["AddressBlockRanges.MSAGLEFT", "AddressBlockRanges.MSAGRIGHT", "Addresses - Site Address Points.MSAG"]
+  }
+ },
+ 
+ "siteAddressPoints" : {
+   "layerName" : "Addresses - Site Address Points", 
+   "addressNumberField" : "ADDRNUM", 
+   "streetNameField" : "FULLNAME",
+ },
+  "selectionSymbols":{
+  "line": { "style": "solid", "color": "#00ffff", "width": 3 },
+  "arrowHead": { "style": "triangle", "color": "#00ffff", "size": 20, "outline": { "style": "solid", "color": "#008080", "width": 2 } }
+  },
+ "fishboneSelectionSymbols":{
+  "line": { "style": "solid", "color": "#ff0000", "width": 3 }
+  },
+  "polygonLayers": [ 
+  { 
+  "layerName" : "Municipal Boundary",  
+  "attributeMapping" :    
+    { "NAME" : [ "AddressBlockRanges.MUNILEFT", "AddressBlockRanges.MUNIRIGHT","Addresses - Site Address Points.MUNICIPALITY"], 
+      "MUNITYP" : [ "AddressBlockRanges.MSAGLEFT"]
+    }    
+  }
+ ],
+ "polygonServices": [ 
+   {
+   "layerUrl" :  "http://198.30.81.186/fcaags/rest/services/Services/AdministrativeAreas/MapServer/1",   
+   "attributeMapping" :    
+     { "NAME" : [ "AddressBlockRanges.L_COUNTY", "AddressBlockRanges.R_COUNTY"], 
+       "STCOFIPS" : [ "Address Block Range.FIPS_CountyCode"]
+     }     
+   },
+   {
+   "layerUrl" :  "http://198.30.81.186/fcaags/rest/services/Services/AdministrativeAreas/MapServer/10",  
+   "attributeMapping" :    
+     { "ZIPCODE" : [ "AddressBlockRanges.L_ZIP", "AddressBlockRanges.R_ZIP"]
+     }     
+   },
+   {
+   "layerUrl":"http://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_States_Generalized/FeatureServer/0",
+   "attributeMapping" :    
+     { "STATE_ABBR" : [ "AddressBlockRanges.L_STATE", "AddressBlockRanges.R_STATE"]
+     } 
+   }
+  ]
+}

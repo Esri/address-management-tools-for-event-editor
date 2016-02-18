@@ -1,0 +1,412 @@
+<div class="esriRibbon">
+
+  <!-- Map tab -->
+  <div>
+    <span>${bundle.map.label}</span>
+    <div>
+      <!-- Navigate group -->
+      <div>
+        <span>${bundle.map.navigate.label}</span>
+        <div class="esriRibbonLargeButton" dojoAttachPoint="_panButton" title="${bundle.map.navigate.panTooltip}" data-ribbon="mapNavPan">
+          <img src="img/pan32.png"/> ${bundle.map.navigate.pan}
+        </div>
+        <div class="esriRibbonPanel">
+          <div style="clear:both;">
+            <div class="esriRibbonSmallButton" title="${bundle.map.navigate.zoomInitialTooltip}" data-ribbon="mapNavZoomInitial">
+              <img src="img/zoomInitial.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" dojoAttachPoint="_zoomPreviousButton" title="${bundle.map.navigate.zoomPreviousTooltip}" data-ribbon="mapNavZoomPrevious">
+              <img src="img/zoomPrevious.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" dojoAttachPoint="_zoomNextButton" title="${bundle.map.navigate.zoomNextTooltip}" data-ribbon="mapNavZoomNext">
+              <img src="img/zoomNext.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" dojoAttachPoint="_zoomInButton" title="${bundle.map.navigate.zoomInTooltip}" data-ribbon="mapNavZoomIn">
+              <img src="img/zoomIn16.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" dojoAttachPoint="_zoomOutButton" title="${bundle.map.navigate.zoomOutTooltip}" data-ribbon="mapNavZoomOut">
+              <img src="img/zoomOut16.png"/>
+            </div>
+          </div>
+          <div style="clear:both;">
+            <div dojoType="dijit.form.Select" dojoAttachPoint="_mapScaleSelect" style="width:120px;"
+            title="${bundle.map.navigate.mapScaleTooltip}"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Find group -->
+      <div>
+        <span>${bundle.map.find.label}</span>
+        <div class="esriRibbonLargeButton findButton" data-ribbon="_findRoute" dojoAttachPoint="_findButton">
+          <img src="img/genericSearch32.png"/> ${bundle.map.find.findRouteLabel}
+        </div>
+        <div class="esriRibbonPanel" dojoAttachPoint="_findPanel" style="display: none">
+          <div dojoType="dijit.form.DropDownButton" id="findDropDown" class="esriRibbonLargeButton findButton">
+            <span><img src="img/genericSearch32.png"/>${bundle.map.find.findRouteLabel}</span>
+            <div dojoType="dijit.Menu" dojoAttachPoint="_findMenu">
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_findRouteMenu" data-ribbon="findRoute" iconClass="iconButton findRoute16">
+                ${bundle.map.find.findRoute}
+              </div>
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_findAddressMenu" data-ribbon="findAddress" iconClass="iconButton findAddress16">
+                ${bundle.map.find.findAddress}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="esriRibbonPanel">
+          <div>
+            ${bundle.map.find.network}
+          </div>
+          <div>
+            <span class="esriRibbonSmallButton" style="float:right; margin-top:0;" dojoAttachPoint="_advancedFindButton" title="${bundle.map.find.advancedFindRouteTooltip}" data-ribbon="advancedFindRoute"> <img src="img/find16.png"/> </span>
+            <div dojoType="dijit.form.Select" dojoAttachPoint="_findLayerSelect" style="width:125px; margin:0;"></div>
+          </div>
+          <div>
+            <div dojoType="dijit.form.TextBox" dojoAttachPoint="_findTextBox" style="width:123px;"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Contents group -->
+      <div>
+        <span>${bundle.map.contents.label}</span>
+        <div class="esriRibbonLargeButton" title="${bundle.map.contents.layersTooltip}" data-ribbon="launchWidget: roads.dijit.Toc">
+          <img src="img/layerTree32.png"/> ${bundle.map.contents.layers}
+        </div>
+        <div class="esriRibbonPanel">
+          <div dojoType="dijit.form.DropDownButton" dojoAttachPoint="_basemapDropDownButton" data-ribbon="launchBasemap" class="esriRibbonLargeButton esriRibbonLargeDropDownButton" title="${bundle.map.contents.basemapTooltip}">
+            <span><img src="img/basemap32.png"/> &nbsp;&nbsp;${bundle.map.contents.basemap}&nbsp;&nbsp;</span>
+            <div dojoType="dijit.layout.ContentPane" class="basemapContentPane" dojoAttachPoint="_basemapContentPane">
+              <div id="basemapDiv"></div>
+            </div>
+          </div>
+        </div>
+        <div class="esriRibbonPanel" dojoAttachPoint="_addDataPanel" style="display: none">
+          <div dojoType="dijit.form.DropDownButton" class="esriRibbonLargeButton esriRibbonLargeDropDownButton" title="${bundle.map.contents.addDataTooltip}">
+            <span><img src="img/addContent32.png"/> &nbsp;${bundle.map.contents.addData}&nbsp;</span>
+            <div dojoType="dijit.Menu" dojoAttachPoint="_addDataMenu">
+              <!-- The extra padding on the non-uploader items accounts for internal padding in the uploader items -->
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_dgnMenuItem" data-ribbon="addDGN" iconClass="iconButton dgnIcon">
+                <span style="padding:0 8px;">${bundle.map.contents.addDataDGN}</span>
+              </div>
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_dwgMenuItem" data-ribbon="addDWG" iconClass="iconButton dwgIcon">
+                <span style="padding:0 8px;">${bundle.map.contents.addDataDWG}</span>
+              </div>
+              <!--<div dojoType="roads.ribbon.UploaderMenuItem" iconClass="iconButton shapefileIcon" uploaderLabel="${bundle.map.contents.addDataShapefile}"></div>
+              <div dojoType="roads.ribbon.UploaderMenuItem" iconClass="iconButton excelFileIcon" uploaderLabel="${bundle.map.contents.addDataCSV}"></div>
+              <div dojoType="dijit.MenuItem" data-ribbon="addDataService" iconClass="iconButton serviceIcon"><span style="padding:0 8px;">${bundle.map.contents.addDataService}</span></div>
+              <div dojoType="dijit.MenuItem" data-ribbon="addDataSearch" iconClass="iconButton searchIcon"><span style="padding:0 8px;">${bundle.map.contents.addDataSearch}</span></div>-->
+            </div>
+          </div>
+        </div>
+        <div class="esriRibbonPanel">
+          <div style="padding-top:2px; padding-bottom:4px;">
+            ${bundle.map.contents.viewDate}
+          </div>
+          <div>
+            <div dojoType="roads.dijit.form.TodayDateTextBox" popupClass="roads.dijit.TodayCalendar" dojoAttachPoint="_viewDateTextBox" style="width:100px;" constraints="{datePattern:'${bundle.DatePattern}'}"></div>
+          </div>
+          <!--
+          <div class="esriRibbonMediumButton">
+          <img src="img/animationTimeLayer16.png"/> ${bundle.map.contents.timeSlider}
+          </div>
+          -->
+        </div>
+      </div>
+      <!-- Identify group -->
+      <div>
+        <span>${bundle.map.identify.label}</span>
+        <div class="esriRibbonLargeButton" dojoAttachPoint="_identifyFeatureButton" title="${bundle.map.identify.identifyTooltip}" data-ribbon="identifyFeature">
+          <img src="img/identifyTool32.png"/> ${bundle.map.identify.identify}
+        </div>
+        <div class="esriRibbonPanel">
+          <div>
+            <div class="esriRibbonSmallButton esriRibbonVertical" dojoAttachPoint="_identifyRouteButton" title="${bundle.map.identify.identifyRouteLocationsTooltip}" data-ribbon="identifyRoute">
+              <img src="img/routeEventIdentifyLocation16.png"/>
+            </div>
+          </div>
+          <!--
+          <div>
+          <div class="esriRibbonSmallButton esriRibbonVertical" title="${bundle.map.identify.advancedIdentifyTooltip}">
+          <img src="img/advancedIdentify16.png"/>
+          </div>
+          </div>
+          -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit tab -->
+  <div>
+    <span>${bundle.edit.label}</span>
+    <div>
+      <!-- Versioning group -->
+      <div dojoAttachPoint="_versioningRibbonDiv">
+        <span>${bundle.edit.versioning.label}</span>    
+        <div class="esriRibbonPanel">            
+            <div class="esriRibbonLargeButton" data-ribbon="launchWidget: roads.dijit.VersionReconciling" dojoAttachPoint="_versioningRibbonButton">
+              <img src="img/reconcileAndPost32.png"/> ${bundle.edit.versioning.reconcileAndPost}
+            </div>
+        </div> 
+        <div class="esriRibbonPanel">   
+            <div dojoAttachPoint="_changeVersionDiv">
+                <div>${bundle.edit.versioning.version}</div>
+                <div dojoType="dijit.form.Select" dojoAttachPoint="_editVersionSelect" style="width:124px; margin-top: 2px;"></div>
+            </div>         
+            <div dojoAttachPoint="_createVersionButton" class="esriRibbonSmallButton" title="${bundle.edit.versioning.createVersionTooltip}" data-ribbon="launchWidget: roads.dijit.CreateGdbVersion">
+              <img src="img/versionCreate16.png"/>
+            </div>
+            <div dojoAttachPoint="_deleteVersionButton" class="esriRibbonSmallButton" title="${bundle.edit.versioning.deleteVersionTooltip}" data-ribbon="_deleteSelectedVersion">
+              <img src="img/genericDeleteRed16.png"/>
+            </div>
+        </div> 
+      </div>
+      <!-- Selection group -->
+      <div>
+        <span>${bundle.edit.selection.label}</span>
+        <div class="esriRibbonPanel">
+          <div dojoType="dijit.form.DropDownButton" class="esriRibbonLargeButton esriRibbonLargeDropDownButton" title="${bundle.edit.selection.select}">
+            <span><img src="img/selectByCommonValueTool32.png"/> &nbsp;${bundle.edit.selection.select}&nbsp;</span>
+            <div dojoType="dijit.Menu">
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_selectByRouteMenu" data-ribbon="selectByRoute" iconClass="iconButton selectByRouteIcon16">
+                ${bundle.edit.selection.selectByRoute}
+              </div>
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_selectByAttributeMenu" data-ribbon="selectByAttribute" iconClass="iconButton selectByAttributeIcon16">
+                ${bundle.edit.selection.selectByAttribute}
+              </div>
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_selectByProximityMenu" data-ribbon="selectByProximity" iconClass="iconButton selectByProximityIcon16">
+                ${bundle.edit.selection.selectByProximity}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="esriRibbonPanel">
+          <div dojoType="roads.dijit.form.BottomArrowComboButton" id="selectByGeometryDropDown" class="esriRibbonLargeButton selectByGeometryButton" dojoAttachPoint="_selectByGeometry" title="${bundle.edit.selection.selectByGeometry}">
+            <span><img src="img/selectByBoundingBox32.png"/>${bundle.edit.selection.rectangle}</span>
+            <div dojoType="dijit.Menu">
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_selectByPointMenu" data-ribbon="selectByPoint" iconClass="iconButton selectByPointIcon16">
+                ${bundle.edit.selection.point}
+              </div>
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_selectByLineMenu" data-ribbon="selectByPolyline" iconClass="iconButton selectByPolylineIcon16">
+                ${bundle.edit.selection.line}
+              </div>
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_selectByRectangleMenu" data-ribbon="selectByRectangle" iconClass="iconButton selectByBoundingBoxIcon16">
+                ${bundle.edit.selection.rectangle}
+              </div>
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_selectByPolygonMenu" data-ribbon="selectByPolygon" iconClass="iconButton selectByPolygonIcon16">
+                ${bundle.edit.selection.polygon}
+              </div>
+              <div dojoType="dijit.MenuItem" dojoAttachPoint="_selectByExtentMenu" data-ribbon="selectByDisplayExtent" iconClass="iconButton selectByCurrentExtentIcon16">
+                ${bundle.edit.selection.currentExtent}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="esriRibbonPanel">
+          <div>
+            ${bundle.edit.selection.selectionLayer}
+            <div dojoType="roads.dijit.form.ExtendedSelect" dojoAttachPoint="_selectionLayerSelect" maxHeight="200" style="width:130px;"></div>
+          </div>
+          <div>
+            <input id="returnAttributeSet" dojoAttachPoint="_returnAttributeSetInput" type="checkbox" dojoType="dijit.form.CheckBox"/>
+            <label for="returnAttributeSet">${bundle.edit.selection.returnAttributeSet}</label>
+          </div>
+          <div>
+            <div class="esriRibbonSmallButton" title="${bundle.edit.selection.clearHighlightsTooltip}" data-ribbon="clearHighlights">
+              <img src="img/clearSelection.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" title="${bundle.edit.selection.highlightAllTooltip}" data-ribbon="highlightAll">
+              <img src="img/highlightAll.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" title="${bundle.edit.selection.zoomToHighlightedTooltip}" data-ribbon="zoomToHighlights">
+              <img src="img/selectionZoomToHighlighted16.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" title="${bundle.edit.selection.zoomToSelectedTooltip}" data-ribbon="zoomToSelection">
+              <img src="img/selectionZoomToSelected16.png"/>
+            </div>
+            <div dojoType="dijit.form.DropDownButton" class="esriRibbonSmallButton" title="${bundle.edit.selection.selectionMethodTooltip}" dojoAttachPoint="_selectionMethod">
+              <span><img id="imgSelectionMethod" src="img/selectionLayerCreate16.png"/></span>
+              <div dojoType="dijit.Menu">
+                <div dojoType="dijit.MenuItem" data-ribbon="selectionMethodNew" iconClass="iconButton createNewSelectionIcon">
+                  ${bundle.edit.selection.newSelection}
+                </div>
+                <div dojoType="dijit.MenuItem" data-ribbon="selectionMethodAdd" iconClass="iconButton appendSelectionIcon">
+                  ${bundle.edit.selection.addToSelection}
+                </div>
+                <div dojoType="dijit.MenuItem" data-ribbon="selectionMethodRemove" iconClass="iconButton removeSelectionIcon">
+                  ${bundle.edit.selection.removeFromSelection}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Edit Events group -->
+      <div>
+        <span>${bundle.edit.editEvents.label}</span>
+        <div class="esriRibbonLargeButton" title="${bundle.edit.editEvents.pointEventsTooltip}" data-ribbon="launchWidget: roads.dijit.PointEventEditing">
+          <img src="img/pointEvents32.png"/> ${bundle.edit.editEvents.pointEvents}
+        </div>
+        <div class="esriRibbonLargeButton" title="${bundle.edit.editEvents.lineEventsTooltip}" data-ribbon="launchWidget: roads.dijit.LinearEventEditing">
+          <img src="img/lineEvents32.png"/> ${bundle.edit.editEvents.lineEvents}
+        </div>
+        <div class="esriRibbonPanel">
+          <div>
+            ${bundle.edit.editEvents.attributeSet}<div dojoAttachPoint="_attributeSetBreak"></div>
+            <div dojoType="dijit.form.Select" dojoAttachPoint="_attributeSetSelect" style="width:124px;"></div>
+          </div>
+          <div style="padding:2px 0 2px 0;">
+            <span dojoAttachPoint="_editModuleVersion" style="display: none;">
+                ${bundle.edit.versioning.version}
+                <span dojoAttachPoint="_editVersionLabel"></span>
+            </span>
+          </div>
+          <div>
+            <div class="esriRibbonSmallButton" title="${bundle.edit.editEvents.splitEventsTooltip}" data-ribbon="launchWidget: roads.dijit.SplitEvents">
+              <img src="img/splitEvents16.png"/>
+            </div>
+            <div dojoAttachPoint="_mergeButton" class="esriRibbonSmallButton" title="${bundle.edit.editEvents.mergeEventsTooltip}" data-ribbon="mergeEvents">
+              <img src="img/mergeEvents16.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" dojoAttachPoint="_toggleSnapping" title="${bundle.edit.editEvents.enableSnappingTooltip}" data-ribbon="toggleSnapping">
+              <img src="img/toggleSnapping16.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" title="${bundle.edit.editEvents.snappingOptionsTooltip}" data-ribbon="launchWidget: roads.dijit.SnappingOptionsEditing">
+              <img src="img/snappingOptions16.png"/>
+            </div>
+            <div class="esriRibbonSmallButton" title="${bundle.edit.editEvents.editAttributeSetsTooltip}" data-ribbon="launchWidget: roads.dijit.AttributeSetEditing">
+              <img src="img/editAttributeSets16.png"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Address Management Group -->
+      <div dojoAttachPoint="_addressManagementDiv" class="addressManagementDiv" style="display: none">
+        <span>${bundle.edit.addressManagement.label}</span>
+        <div class="esriRibbonPanel">
+          <div class="esriRibbonLargeButton addressManagement" dojoAttachPoint="_blockRangeButton" title="${bundle.edit.addressManagement.addBlockRangeTooltip}"  data-ribbon="_showAddBlockRangeWidget" style="display: none">
+            <span><img src="img/editBlockRange32.png"/>${bundle.edit.addressManagement.addBlockRange}</span>
+        
+          </div>
+        </div>
+         <div class="esriRibbonPanel">
+          <div class="esriRibbonLargeButton addressManagement" dojoAttachPoint="_siteAddressButton" title="${bundle.edit.addressManagement.addSiteAddressesTooltip}"  data-ribbon="_showAddSiteAddressWidget" style="display: none">
+            <span><img src="img/launchAddSiteAddressPointWidget.png"/>${bundle.edit.addressManagement.addSiteAddresses}</span>
+        
+          </div>
+        </div>
+         <div class="esriRibbonPanel">
+          <div>
+            <div class="esriRibbonSmallButton esriRibbonVertical" dojoAttachPoint="_streetNameButton"  title="${bundle.edit.addressManagement.addStreetNamesTooltip}" data-ribbon="_showAddStreetNamesWidget" style="display: none">
+              <img src="img/masterStreetnameTableEdit.png"/>
+            </div>
+          </div>
+          <div>
+              <div class="esriRibbonSmallButton esriRibbonVertical" title=" ${bundle.edit.selection.newSelection}" dojoAttachPoint="_selectBlockRangeFishbone" data-ribbon="_drawFishboneGraphics" style="display: none">
+                  <img id="imgSelectionMethod" src="img/fishbone.png"/>
+              </div>
+              <div class="esriRibbonSmallButton esriRibbonVertical" data-ribbon="_clearFishboneGraphics" dojoAttachPoint="_clearBlockRangeFishbone" title=" ${bundle.edit.selection.removeFromSelection}" style="display: none">
+                  <img id="imgSelectionMethod" src="img/clearFishbone.png"/>
+              </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Review tab -->
+  <div>
+    <span>${bundle.review.label}</span>
+    <div>
+      <!-- QC group -->
+      <div>
+        <span>${bundle.review.qc.label}</span>
+        <div class="esriRibbonLargeButton" data-ribbon="launchWidget: roads.dijit.QcEventsForm">
+          <img src="img/checkMarkGreen32.png"/> ${bundle.review.qc.checkEventsOnRoute}
+        </div>
+      </div>
+      <!-- Conflict Prevention group -->
+      <div dojoAttachPoint="_conflictPreventionRibbonDiv" style="min-width: 100px;">
+        <span>${bundle.review.conflictPrevention.label}</span>
+        <div style="width: 100%">
+            <div style="display: table; margin: 0 auto;">
+                <div class="esriRibbonLargeButton" title="${bundle.review.conflictPrevention.editLocksTooltip}" data-ribbon="launchWidget: roads.dijit.LocksTable" style="min-width: 45px;">
+                  <img src="img/editLocks32.png"/> ${bundle.review.conflictPrevention.editLocks}
+                </div>
+            </div>
+        </div>
+      </div>
+      <!-- Data Reviewer group -->
+      <div dojoAttachPoint="_dataReviewerRibbonDiv">
+        <span>${bundle.review.dataReviewer.label}</span>
+        <div class="esriRibbonLargeButton" title="${bundle.review.dataReviewer.showTableTooltip}" data-ribbon="_showDataReviewerTable">
+          <img src="img/tableOpen32.png"/> ${bundle.review.dataReviewer.showTable}
+        </div>
+        <div class="esriRibbonPanel">
+          <div dojoType="dijit.form.DropDownButton" dojoAttachPoint="_dataReviewerCheckButton" class="esriRibbonLargeButton esriRibbonLargeDropDownButton" title="${bundle.review.dataReviewer.runCheckTooltip}">
+            <span><img src="img/batchValidate32.png"/> &nbsp;${bundle.review.dataReviewer.runCheck}&nbsp;</span>
+            <div dojoType="dijit.Menu" dojoAttachPoint="_batchValidateMenu">
+              <!-- Menu is populated in DataReviewerModule.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Markup group -->
+      <div>
+        <span>${bundle.review.markup.label}</span>
+        <div class="esriRibbonPanel">
+          <div class="markupOutsideBorder">
+            <div class="markupInsideBorder">
+              <div class="markupContainer">
+                <div class="markupButton" dojoAttachPoint="_markupPointButton" data-ribbon="_markupButtonClicked">
+                  <!-- <div style="width: 100%">
+                    <img src="img/greenPin.png" width="30" height="30" style="margin-top: 2px; margin-left: 1px; margin-right: 1px"/>
+                  </div> -->
+                  <div id="markupPinGfx">
+                    <!-- shape generated in MarkupModule.js -->
+                  </div>
+                  ${bundle.review.markup.point}
+                </div>
+                <div class="markupButton" dojoAttachPoint="_markupLineButton" data-ribbon="_markupButtonClicked">
+                  <div id="markupLineGfx">
+                    <!-- shape generated in MarkupModule.js -->
+                  </div>
+                  ${bundle.review.markup.line}
+                </div>
+                <div class="markupButton" dojoAttachPoint="_markupPolygonButton" data-ribbon="_markupButtonClicked">
+                  <div id="markupAreaGfx">
+                    <!-- shape generated in MarkupModule.js -->
+                  </div>
+                  ${bundle.review.markup.polygon}
+                </div>
+                <div class="markupButton" dojoAttachPoint="_markupLabelButton" data-ribbon="_markupButtonClicked">
+                  <div style="width: 100%">
+                    <img src="img/label.png" width="30" height="30" style="margin-top: 2px; margin-left: 1px; margin-right: 1px"/>
+                  </div>
+                  ${bundle.review.markup.textLabel}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Inquiry group -->
+      <div>
+        <span>${bundle.review.inquiry.label}</span>
+        <div class="esriRibbonLargeButton" title="${bundle.review.inquiry.measureToolTooltip}" data-ribbon="launchWidget: roads.dijit.Measurement">
+          <img src="img/measureDistance32.png"/> ${bundle.review.inquiry.measureTool}
+        </div>
+      </div>
+      <!-- Redline Routes group -->
+      <div>
+        <span>${bundle.review.redlineRoutes.label}</span>
+        <div class="esriRibbonPanel">
+          <div id="templatePickerDiv"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

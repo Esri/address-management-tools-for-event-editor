@@ -1,0 +1,133 @@
+<div style="width:100%; height:100%; overflow:auto;" >
+    <div dojoAttachPoint="_panelContainer" dojoType="roads.dijit.layout.TransitionStackContainer" style="width:100%; height:100%;">
+        <div dojoType="dijit.layout.ContentPane">
+            <div style="margin-top:10px;">
+                <div style="position:relative; margin-top:15px; margin-bottom:10px;">
+                    <hr size="1"/><span style="position:absolute; top:-7px; left:12px; padding:0 3px; background-color:#ffffff;">${bundle.blockRangeFormLabel}</span>
+                </div>
+                <table cellspacing="3" cellpadding="0" style="width:100%;">
+                    <tr>
+                        <td nowrap>
+                            <span dojoAttachPoint="_blockRangeLabel">${bundle.blockRangeIdLabel}</span>
+                        </td>
+                        <td>
+                            <div dojoAttachPoint="_blockRangeIdInput" dojoType="dijit.form.ValidationTextBox" required="false" readOnly="true" style="width: 100%;">
+                            </div>
+                        </td>
+                        <td style="padding-left:5px;" align="right">
+                            <button dojoAttachPoint="_selectRouteButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton selectRouteIcon" showLabel="false" tabindex="-1" title="${bundle.selectRouteTooltip}">
+                            </button>
+                        </td>
+                        <td align="right">
+                            <div dojoAttachPoint="_zoomBlockButton" dojoType="roads.addressManagement.ZoomBlockButton">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td nowrap>
+                            <span dojoAttachPoint="_routeLabel">${bundle.routeIdLabel}</span>
+                        </td>
+                        <td colspan="2">
+                            <div dojoAttachPoint="_routeInput" dojoType="dijit.form.ValidationTextBox" required="true" readOnly="true" style="width:100%;">
+                            </div>
+                        </td>
+                        <td align="right">
+                            <div dojoAttachPoint="_zoomRouteButton" dojoType="roads.dijit.form.ZoomRouteButton">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            ${bundle.locationFromLabel}
+                        </td>
+                        <td colspan="2">
+                            <div dojoAttachPoint="_fromIntersectionInput" dojoType="dijit.form.Select" style="width:100%;" required="true">
+                            </div>
+                        </td>
+                        <td align="right">
+                           <button dojoAttachPoint="_selectFromIntersectionButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton selectByPointIcon16" showLabel="false" tabindex="-1" title="${bundle.selectIntersectionTooltip}">
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            ${bundle.locationToLabel}
+                        </td>
+                        <td colspan="2">
+                            <div dojoAttachPoint="_toIntersectionInput" dojoType="dijit.form.Select" style="width:100%;" required="true">
+                            </div>
+                        </td>
+                        <td align="right">
+                           <button dojoAttachPoint="_selectToIntersectionButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton selectByPointIcon16" showLabel="false" tabindex="-1" title="${bundle.selectIntersectionTooltip}">
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="margin-top:10px;">
+                <!-- horizontal line with section title -->
+                <div style="position:relative; margin-top:15px; margin-bottom:10px;">
+                    <hr size="1"/><span style="position:absolute; top:-7px; left:12px; padding:0 3px; background-color:#ffffff;">${bundle.dateFormLabel}</span>
+                </div>
+                <table cellspacing="3" cellpadding="0">
+                    <tr>
+                        <td nowrap>
+                            ${bundle.fromDateLabel}
+                        </td>
+                        <td>
+                            <div dojoAttachPoint="_fromDateInput" dojoType="dijit.form.DateTextBox" style="width:100%;">
+                            </div>
+                        </td>
+                        <td colspan="3" nowrap>
+                            <div style="padding:3px;">
+                                <label>
+                                    <input dojoAttachPoint="_useRouteStartDate" type="checkbox" dojoType="dijit.form.CheckBox" dojoAttachEvent="onChange:_onUseRouteStartDate"/>${bundle.useRouteStartDateLabel}
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td nowrap>
+                            ${bundle.toDateLabel}
+                        </td>
+                        <td>
+                            <div dojoAttachPoint="_toDateInput" dojoType="dijit.form.DateTextBox" style="width:100%;">
+                            </div>
+                        </td>
+                        <td colspan="3" nowrap>
+                            <div style="padding:3px;">
+                                <label>
+                                    <input dojoAttachPoint="_useRouteEndDate" type="checkbox" dojoType="dijit.form.CheckBox" dojoAttachEvent="onChange:_onUseRouteEndDate"/>${bundle.useRouteEndDateLabel}
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr cellspacing="0">
+                    
+                        <td colspan="5">
+                          <div style="padding:3px;float:right;">
+                          <button dojoAttachPoint="_populateAttributesButton" dojoType="dijit.form.Button" class="noBackgroundButton" 
+                            iconClass="iconButton eyeDropperIcon" showLabel="false" title="${bundle.populateAttributes}"></button>
+                            <button dojoAttachPoint="_flipParityButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton flipParityIcon" showLabel="false" dojoAttachEvent="onClick:_onFlipParity">
+                                ${bundle.flipParity}
+                            </button>
+                            </div>
+                        </td>
+                        <td>
+                            <button dojoAttachPoint="_flipGeometryButton" dojoType="dijit.form.Button" class="noBackgroundButton" iconClass="iconButton flipGeometryIcon" showLabel="false" dojoAttachEvent="onClick:_onFlipGeometry" style="float:right;">
+                                ${bundle.flipGeometry}
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div dojoAttachPoint="_attributeGroupTabs" dojoType="dijit.layout.ContentPane" style="min-height:400px; margin-bottom:10px;">
+            </div>
+            <div style="margin-top:5px;">
+                <button dojoAttachPoint="_saveButton" dojoType="dijit.form.Button" dojoAttachEvent="onClick:_onSaveChangesButtonClick" style="float:right;">
+                    ${bundle.save}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
