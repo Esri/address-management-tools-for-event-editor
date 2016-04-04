@@ -551,7 +551,7 @@ define([
                         this._populateAttribute(siteAddress, this._addressConfig.siteAddressPoints.streetNameField, this._store.getValue(this._currentRootItem, "name"));
                         //Auto populate attributes from master street name table
                         if (this._addressConfig.masterStreetNameTable && this._addressConfig.masterStreetNameTable.attributeMapping) {
-                            this._addressManagementTask.populateAttributesFromMasterStreetTable(this._addressConfig.siteAddressPoints.layerName, this._store.getValue(this._currentRootItem, "name")).then(lang.hitch(this, function(result) {
+                            this._addressManagementTask.populateAttributesFromMasterStreetTable(this.featureLayer, this._store.getValue(this._currentRootItem, "name")).then(lang.hitch(this, function(result) {
                                 if (result.attributes) {
                                     for (var field in result.attributes) {
                                         var fieldValue = result.attributes[field];
@@ -563,7 +563,7 @@ define([
 
                         //Auto populate attributes from polygon layer
                         if (this._addressConfig.polygonLayers || this._addressConfig.polygonServices) {
-                            this._addressManagementTask.populateAttributesFromPolygonLayer(this._addressConfig.siteAddressPoints.layerName, siteAddress.feature).then(lang.hitch(this, function(result) {
+                            this._addressManagementTask.populateAttributesFromPolygonLayer(this.featureLayer, siteAddress.feature).then(lang.hitch(this, function(result) {
                                 this._standby.hide();
                                 if (result.attributes) {
                                     for (var field in result.attributes) {
@@ -648,7 +648,7 @@ define([
             this._initAttributeGrid(siteAddress);
 
             if (this._addressConfig.polygonLayers || this._addressConfig.polygonServices) {
-                this._addressManagementTask.populateAttributesFromPolygonLayer(this._addressConfig.siteAddressPoints.layerName, siteAddress.feature).then(lang.hitch(this, function(result) {
+                this._addressManagementTask.populateAttributesFromPolygonLayer(this.featureLayer, siteAddress.feature).then(lang.hitch(this, function(result) {
                     this._standby.hide();
                     if (result.attributes) {
                         for (var field in result.attributes) {
@@ -1579,7 +1579,7 @@ define([
 
         copyAttributesFromMasterStreetTable : function(value) {
             if (this.addressConfig.masterStreetNameTable && this.addressConfig.masterStreetNameTable.attributeMapping) {
-                this.addressTask.populateAttributesFromMasterStreetTable(this.addressConfig.siteAddressPoints.layerName, value).then(lang.hitch(this, function(result) {
+                this.addressTask.populateAttributesFromMasterStreetTable(this.featureLayer, value).then(lang.hitch(this, function(result) {
                     if (result.attributes) {
                         for (var fieldName in result.attributes) {
                             var value = result.attributes[fieldName];
@@ -1711,6 +1711,7 @@ define([
                     masterStreetLayer : this.parent._masterStreetNameTable,
                     fullStreetFieldName : this.parent._fullStreetName,
                     mapManager : this.parent._mapManager,
+                    featureLayer:this.parent.featureLayer,
                     networkLayer : this.parent._selectedNetworkLayer,
                     style : "width: 100%;"
                 });

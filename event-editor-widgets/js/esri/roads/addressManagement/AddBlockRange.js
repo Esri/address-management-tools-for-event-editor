@@ -1723,8 +1723,21 @@ define([
                                              this._newEvent = feature;
                                              this._getLineDirectionGraphic(geometry, true);
                                              this._flipParity = false;
+                                             
+                                             if(this._selectedEventLayer.routeIdFieldName == this._addressConfig.blockRangeLayer.fullStreetNameField){
+                                                 if (this._addressConfig.masterStreetNameTable && this._addressConfig.masterStreetNameTable.attributeMapping) {
+                                                     this._addressTask.populateAttributesFromMasterStreetTable(this._selectedEventLayer, this.routeId).then(lang.hitch(this, function(result) {
+                                                         if (result.attributes) {
+                                                             for (var field in result.attributes) {
+                                                                 var fieldValue = result.attributes[field];
+                                                                 this._autoPopulateAttribute(field, fieldValue);
+                                                             }
+                                                         }
+                                                     }));
+                                                 }
+                                             }
                                              if (this._addressConfig.polygonLayers || this._addressConfig.polygonServices) {
-                                               this._addressTask.populateAttributesFromPolygonLayer(this._addressConfig.blockRangeLayer.layerName, feature).then(lang.hitch(this, function(result){
+                                               this._addressTask.populateAttributesFromPolygonLayer(this._selectedEventLayer, feature).then(lang.hitch(this, function(result){
                                                  if (result.attributes) {
                                                    for (var field in result.attributes) {
                                                      var fieldValue = result.attributes[field];
@@ -3151,7 +3164,7 @@ define([
         
          copyAttributesFromMasterStreetTable:function(value){
              if (this.addressConfig.masterStreetNameTable && this.addressConfig.masterStreetNameTable.attributeMapping) {
-                 this.addressTask.populateAttributesFromMasterStreetTable(this.addressConfig.blockRangeLayer.layerName, value).then(lang.hitch(this, function(result){
+                 this.addressTask.populateAttributesFromMasterStreetTable(this.eventLayer, value).then(lang.hitch(this, function(result){
                      if (result.attributes) {
                          for (var fieldName in result.attributes) {
                              var value = result.attributes[fieldName];
@@ -3288,6 +3301,7 @@ define([
                     masterStreetLayer: this.parent._masterStreetNameTable,
                     fullStreetFieldName: this.parent._fullStreetName,
                     mapManager: this.parent._mapManager,
+                    eventLayer: this.parent._selectedEventLayer, 
                     networkLayer: this.parent._selectedNetworkLayer,
                     style: "width: 100%;"
                 });

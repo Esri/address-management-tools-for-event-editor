@@ -218,93 +218,82 @@ define([
             return utils.first(tables, function(table) {
                 return table.name == tableName;
             });
-        }, populateAttributesFromPolygonLayer: function(targetLayerName, feature) {
-            var addressConfig = this._mapManager.addressInfo.config, targetFields = [], defd = new Deferred(), defds = [];
+        }, populateAttributesFromPolygonLayer: function(targetLayer, feature) {
+          
+            var addressConfig = this._mapManager.addressInfo.config, outFields = [], targetFields = [], defd = new Deferred(), allLayers = [], firstDefds = [], defds = [];
+            var attributes = {}, targetFieldMapping =[];
             array.forEach(addressConfig.polygonLayers, function(polygonLayer) {
                 this._getLayerByName(polygonLayer.layerName).then(lang.hitch(this, function(result) {
-                    var outFields = [], targetFields = [];
                     if (result.isConfigured) {
-                        serviceInfoCache.get(utils.appendUrlPath(result.serviceUrl, "/" + result.layerId)).then(lang.hitch(this, function(layerInfo) {
-                            var layerFields = layerInfo.fields;
-                            for (var sourceField in polygonLayer.attributeMapping) {
-                                var srcField = array.filter(layerFields, function(fld){
-                                return (fld.name == sourceField);
-                                })[0];
-                                var fields = polygonLayer.attributeMapping[sourceField];
-                                var fieldMapping = array.filter(fields, function(field) {
-                                    return (field.indexOf(targetLayerName) >= 0);
-                                });
-                                if (fieldMapping && fieldMapping.length > 0) {
-                                    fieldMapping = array.map(fieldMapping, function(field) {
-                                        return field.replace(targetLayerName + ".", "");
-                                    });
-                                    outFields.push(srcField);
-                                    targetFields.push(fieldMapping);
-                                }
-                            }
-                            if (targetFields.length > 0) {
-                                var queryParams = {
-                                    url : utils.appendUrlPath(result.serviceUrl, "/" + result.layerId),
-                                    outFields : outFields,
-                                    targetFields : targetFields
-                                };
-                                defds.push(this._queryPolygonLayers(queryParams, feature));
-                            }
-                        }), lang.hitch(this, function(err) {
-                            console.warn("Not able to query " + polygonLayer.layerName);
-                        }));
+                        firstDefds.push(serviceInfoCache.get(utils.appendUrlPath(result.serviceUrl, "/" + result.layerId)));
+                        polygonLayer.layerUrl = utils.appendUrlPath(result.serviceUrl, "/" + result.layerId);
+                        allLayers.push(polygonLayer);
                     } else {
                         console.warn(polygonLayer.layerName + " layer not found");
                     }
                 }));
             }, this);
             array.forEach(addressConfig.polygonServices, function(polygonLayer) {
-                var outFields = [], targetFields = [];
-                serviceInfoCache.get(polygonLayer.layerUrl).then(lang.hitch(this, function(layerInfo) {
-                    var layerFields = layerInfo.fields;
-                    for (var sourceField in polygonLayer.attributeMapping) {
-                        var srcField = array.filter(layerFields, function(fld){
-                        return (fld.name == sourceField);
-                        })[0];
-                        var fields = polygonLayer.attributeMapping[sourceField];
-                        var fieldMapping = array.filter(fields, function(field) {
-                            return (field.indexOf(targetLayerName) >= 0);
-                        });
-                        if (fieldMapping && fieldMapping.length > 0) {
-                            fieldMapping = array.map(fieldMapping, function(field) {
-                                return field.replace(targetLayerName + ".", "");
-                            });
-                            outFields.push(srcField);
-                            targetFields.push(fieldMapping);
-                        }
-                    }
-                    if (targetFields.length > 0) {
-                        var queryParams = {
-                            url : polygonLayer.layerUrl,
-                            outFields : outFields,
-                            targetFields : targetFields
-                        };
-                        defds.push(this._queryPolygonLayers(queryParams, feature));
-                    }
-                }), lang.hitch(this, function(err) {
-                    console.warn("Not able to query " + polygonLayer.layerUrl);
-                }));
+               
+                firstDefds.push(serviceInfoCache.get(polygonLayer.layerUrl));
+                allLayers.push(polygonLayer);
             }, this);
-            var attributes = {};
-            new DeferredList(defds).then(lang.hitch(this, function(results) {
-                array.forEach(results, function(result, resultIndex) {
-                    if (result[0]) {
-                        if (result[1].attributes) {
-                            lang.mixin(attributes, result[1].attributes);
-                        }
-                    }
 
+            return new DeferredList(firstDefds).then(lang.hitch(this, function(results) {
+                array.forEach(results, function(result, resultIndex) {
+                    var polygonLayer = allLayers[resultIndex];
+                     var outFields = [], targetFields = [], targetFieldMapping=[];
+                    if (result[0]) {
+                        var layerInfo = result[1];
+                        var layerFields = layerInfo.fields;
+                        for (var sourceField in polygonLayer.attributeMapping) {
+                            var srcField = array.filter(layerFields, function(fld){
+                            return (fld.name == sourceField);
+                            })[0];
+                            var fields = polygonLayer.attributeMapping[sourceField];
+                            var fieldMapping = array.filter(fields, function(field) {
+                                return (field.indexOf(targetLayer.name) >= 0);
+                            });
+                            if (fieldMapping && fieldMapping.length > 0) {
+                                fieldMapping = array.map(fieldMapping, function(field) {
+                                    return field.replace(targetLayer.name + ".", "");
+                                });
+                                 targetFieldMapping= array.filter(targetLayer.fields, function(field){
+                                        return fieldMapping.indexOf(field.name)!=-1;
+                                });
+                                outFields.push(srcField);
+                                targetFields.push(targetFieldMapping);
+                            }
+                        }
+                        if (targetFields.length > 0) {
+                            var queryParams = {
+                                url : polygonLayer.layerUrl,
+                                outFields : outFields,
+                                targetFields : targetFields
+                            };
+                            defds.push(this._queryPolygonLayers(queryParams, feature));
+                        }
+                    } else {
+                        console.warn("Not able to query " + polygonLayer.layerName);
+                    }
                 }, this);
-                defd.callback({
-                    attributes : attributes
-                });
+            })).then(lang.hitch(this, function() {
+                return new DeferredList(defds).then(lang.hitch(this, function(results) {
+                    array.forEach(results, function(result, resultIndex) {
+                        if (result[0]) {
+                            if (result[1].attributes) {
+                                lang.mixin(attributes, result[1].attributes);
+                            }
+                        }
+
+                    }, this);
+                    defd.callback({
+                        attributes : attributes
+                    });
+                    return defd;
+                }));
             }));
-            return defd;
+
         }, _queryPolygonLayers:function(queryParams, feature) {
             var defd = new Deferred(), map = this._mapManager.map, query = new Query(), attributes = {};
             var outFields = array.map(queryParams.outFields, function(field) {
@@ -331,7 +320,19 @@ define([
                             }, this);
                         }
                         array.forEach(targetFieldNames, function(targetFieldName, index) {
-                            attributes[targetFieldName] = value;
+                            if (targetFieldName.domain) {
+                                var codeValue = null;
+                                array.some(targetFieldName.domain.codedValues, function(codedValue) {
+                                    if (value == codedValue.code) {
+                                        codeValue = codedValue.name;
+                                        return true;
+                                    }
+                                    return false;
+                                }, this);
+                                attributes[targetFieldName.name] = codeValue;
+                            } else {
+                                attributes[targetFieldName.name] = value;
+                            }
                         }, this);
                     }, this);
                     defd.callback({
@@ -339,20 +340,41 @@ define([
                     });
                 } else if (features.length > 1) {
                     console.warn("More than one feature found on the layer " + queryParams.url);
+                     array.forEach(queryParams.outFields, function(field, index) {
+                        var targetFieldNames = queryParams.targetFields[index];
+                        array.forEach(targetFieldNames, function(targetFieldName, index) {
+                            attributes[targetFieldName.name] = null;
+                        }, this);
+                    }, this);
+                    
                     defd.callback({
-                        attributes : null
+                        attributes : attributes
                     });
                 } else {
                     console.warn("No feature found on the layer " + queryParams.url);
+                    array.forEach(queryParams.outFields, function(field, index) {
+                        var targetFieldNames = queryParams.targetFields[index];
+                        array.forEach(targetFieldNames, function(targetFieldName, index) {
+                            attributes[targetFieldName.name] = null;
+                        }, this);
+                    }, this);
+                    
                     defd.callback({
-                        attributes : null
+                        attributes : attributes
                     });
                 }
             }), lang.hitch(this, function(err) {
                 console.warn("Unable to query polygon layer. ", err);
-                defd.callback({
-                    attributes : null
-                });
+                array.forEach(queryParams.outFields, function(field, index) {
+                        var targetFieldNames = queryParams.targetFields[index];
+                        array.forEach(targetFieldNames, function(targetFieldName, index) {
+                            attributes[targetFieldName.name] = null;
+                        }, this);
+                    }, this);
+                    
+                    defd.callback({
+                        attributes : attributes
+                    });
             }));
             return defd;
         }, _getLayerByName: function(layerName) {
@@ -438,9 +460,9 @@ define([
                 }
             }
             return defd;
-        }, populateAttributesFromMasterStreetTable: function(targetLayerName, value) {
+        }, populateAttributesFromMasterStreetTable: function(targetLayer, value) {
             var addressConfig = this._mapManager.addressInfo.config, targetFields = [], defd = new Deferred(), defds = [], masterStreetNameInfo = this._mapManager.addressInfo.masterStreetNameInfo, queryUrl = utils.appendUrlPath(masterStreetNameInfo.serviceLayer.url, "/" + masterStreetNameInfo.layerId);
-            var outFields = [], targetFields = [], attributes = {};
+            var outFields = [], targetFields = [], targetFieldMapping=[], attributes = {};
             serviceInfoCache.get(queryUrl).then(lang.hitch(this, function(layerInfo) {
                 var layerFields = layerInfo.fields;
                 for (var sourceField in addressConfig.masterStreetNameTable.attributeMapping) {
@@ -450,14 +472,17 @@ define([
 
                     var fields = addressConfig.masterStreetNameTable.attributeMapping[sourceField];
                     var fieldMapping = array.filter(fields, function(field) {
-                        return (field.indexOf(targetLayerName) >= 0);
+                        return (field.indexOf(targetLayer.name) >= 0);
                     });
                     if (fieldMapping && fieldMapping.length > 0) {
                         fieldMapping = array.map(fieldMapping, function(field) {
-                            return field.replace(targetLayerName + ".", "");
+                            return field.replace(targetLayer.name + ".", "");
+                        });
+                        targetFieldMapping = array.filter(targetLayer.fields, function(field) {
+                            return fieldMapping.indexOf(field.name) != -1;
                         });
                         outFields.push(srcField);
-                        targetFields.push(fieldMapping);
+                        targetFields.push(targetFieldMapping); 
                     }
                 }
                 if (targetFields.length > 0) {
@@ -502,7 +527,19 @@ define([
                             }, this);
                         }
                         array.forEach(targetFieldNames, function(targetFieldName, index) {
-                            attributes[targetFieldName] = value;
+                            if (targetFieldName.domain) {
+                                var codeValue = null;
+                                array.some(targetFieldName.domain.codedValues, function(codedValue) {
+                                    if (value == codedValue.code) {
+                                        codeValue = codedValue.name;
+                                        return true;
+                                    }
+                                    return false;
+                                }, this);
+                                attributes[targetFieldName.name] = codeValue;
+                            } else {
+                                attributes[targetFieldName.name] = value;
+                            }
                         }, this);
                     }, this);
                     defd.callback({
@@ -510,20 +547,41 @@ define([
                     });
                 } else if (features.length > 1) {
                     console.warn("More than one feature found on the layer " + queryParams.url);
+                     array.forEach(queryParams.outFields, function(field, index) {
+                        var targetFieldNames = queryParams.targetFields[index];
+                        array.forEach(targetFieldNames, function(targetFieldName, index) {
+                            attributes[targetFieldName.name] = null;
+                        }, this);
+                    }, this);
+                    
                     defd.callback({
-                        attributes : null
+                        attributes : attributes
                     });
                 } else {
                     console.warn("No feature found on the layer " + queryParams.url);
+                     array.forEach(queryParams.outFields, function(field, index) {
+                        var targetFieldNames = queryParams.targetFields[index];
+                        array.forEach(targetFieldNames, function(targetFieldName, index) {
+                            attributes[targetFieldName.name] = null;
+                        }, this);
+                    }, this);
+                    
                     defd.callback({
-                        attributes : null
+                        attributes : attributes
                     });
                 }
             }), lang.hitch(this, function(err) {
                 console.warn("Unable to query polygon layer. ", err);
-                defd.callback({
-                    attributes : null
-                });
+                 array.forEach(queryParams.outFields, function(field, index) {
+                        var targetFieldNames = queryParams.targetFields[index];
+                        array.forEach(targetFieldNames, function(targetFieldName, index) {
+                            attributes[targetFieldName.name] = null;
+                        }, this);
+                    }, this);
+                    
+                    defd.callback({
+                        attributes : attributes
+                    });
             }));
 
             return defd;
