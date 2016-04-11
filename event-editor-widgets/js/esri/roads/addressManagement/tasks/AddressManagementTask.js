@@ -312,8 +312,8 @@ define([
                         var value = features[0].attributes[field.name];
                         if (field.domain) {
                             array.some(field.domain.codedValues, function(codedValue) {
-                                if (value == codedValue.name) {
-                                    value = codedValue.code;
+                                if (value == codedValue.code) {
+                                    value = codedValue.name;
                                     return true;
                                 }
                                 return false;
@@ -323,8 +323,11 @@ define([
                             if (targetFieldName.domain) {
                                 var codeValue = null;
                                 array.some(targetFieldName.domain.codedValues, function(codedValue) {
-                                    if (value == codedValue.code) {
-                                        codeValue = codedValue.name;
+                                    if (value == codedValue.name) {
+                                        codeValue = codedValue.code;
+                                        return true;
+                                    } else if(value == codedValue.code) {
+                                        codeValue = codedValue.code;
                                         return true;
                                     }
                                     return false;
@@ -519,8 +522,8 @@ define([
                         var value = features[0].attributes[field.name];
                         if (field.domain) {
                             array.some(field.domain.codedValues, function(codedValue) {
-                                if (value == codedValue.name) {
-                                    value = codedValue.code;
+                                if (value == codedValue.code) {
+                                    value = codedValue.name;
                                     return true;
                                 }
                                 return false;
@@ -530,8 +533,11 @@ define([
                             if (targetFieldName.domain) {
                                 var codeValue = null;
                                 array.some(targetFieldName.domain.codedValues, function(codedValue) {
-                                    if (value == codedValue.code) {
-                                        codeValue = codedValue.name;
+                                    if (value == codedValue.name) {
+                                        codeValue = codedValue.code;
+                                        return true;
+                                    } else if(value == codedValue.code) {
+                                        codeValue = codedValue.code;
                                         return true;
                                     }
                                     return false;

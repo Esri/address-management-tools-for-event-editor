@@ -1955,35 +1955,69 @@ define([
                 console.log("The block range layer does not exist.");
                 return;
             }
-            array.forEach(eventLayer.fields, function(field){
+            var nonAddressFields =[];
+            var nonAddressItems=[], addressItems = [];
+            array.forEach(eventLayer.fields, function(field) {
                 // Filter out fields that have special handling or are not editable
                 var specialFields = [eventLayer.eventIdFieldName, eventLayer.routeIdFieldName, eventLayer.fromMeasureFieldName, eventLayer.toMeasureFieldName, eventLayer.fromDateFieldName, eventLayer.toDateFieldName, (eventLayer.locErrorFieldName || "")];
                 var referentFields = referentUtils.getReferentFields(eventLayer);
                 var unsupportedDataTypes = ["esriFieldTypeGeometry", "esriFieldTypeBlob", "esriFieldTypeRaster", "esriFieldTypeXML", "esriFieldTypeOID"];
                 var fieldInfo;
-                if ((field.editable) &&
-                (array.indexOf(specialFields, field.name) == -1) &&
-                (array.indexOf(unsupportedDataTypes, field.type) == -1) &&
-                (array.indexOf(referentFields, field.name) == -1)) {
+                if ((field.editable) && 
+                    (array.indexOf(specialFields, field.name) == -1) && 
+                    (array.indexOf(unsupportedDataTypes, field.type) == -1) && 
+                    (array.indexOf(referentFields, field.name) == -1)) {
                     fieldInfo = field;
-                    
-                    var item = {
-                        id: "" + itemIndex,
-                        networkName: eventLayer.parentNetwork.name,
-                        layerName: eventLayer.name,
-                        fieldAlias: fieldInfo.alias || "",
-                        fieldValue: fieldInfo.defaultValue
-                    };
-                    groupDataItems.push(item);
-                    this._editItemInfo[item.id] = {
-                        // Extra properties that shouldn't be stored directly in the data store item
-                        layer: eventLayer,
-                        field: fieldInfo
-                    };
-                    itemIndex++;
+                    var item;
+                    if (field.name == this._addressConfig.blockRangeLayer.rightFromAddressField || 
+                        field.name == this._addressConfig.blockRangeLayer.rightToAddressField || 
+                        field.name == this._addressConfig.blockRangeLayer.leftFromAddressField || 
+                        field.name == this._addressConfig.blockRangeLayer.leftToAddressField) {
+                        item = {
+                            id : "" + itemIndex,
+                            networkName : eventLayer.parentNetwork.name,
+                            layerName : eventLayer.name,
+                            fieldAlias : fieldInfo.alias || "",
+                            fieldValue : fieldInfo.defaultValue
+                        };
+                        groupDataItems.push(item);
+
+                        addressItems[item.id] = {
+                            // Extra properties that shouldn't be stored directly in the data store item
+                            layer : eventLayer,
+                            field : fieldInfo
+                        };
+                        itemIndex++;
+                    }else {
+                        item = {
+                            id : "" + itemIndex,
+                            networkName : eventLayer.parentNetwork.name,
+                            layerName : eventLayer.name,
+                            fieldAlias : fieldInfo.alias || "",
+                            fieldValue : fieldInfo.defaultValue
+                        };
+                        nonAddressFields.push(item);
+                        nonAddressItems[item.id] = {
+                            // Extra properties that shouldn't be stored directly in the data store item
+                            layer : eventLayer,
+                            field : fieldInfo
+                        };
+                        itemIndex++;
+                    }
+
                 }
+
+            }, this); 
+            groupDataItems= groupDataItems.concat(nonAddressFields);
+            for(var item in addressItems){
+                this._editItemInfo[item]= addressItems[item];
                 
-            }, this);
+            }
+            for(var item in nonAddressItems){
+                this._editItemInfo[item]= nonAddressItems[item];
+                
+            }
+
             
             
             var store = new ItemFileWriteStore({
