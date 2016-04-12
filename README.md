@@ -23,11 +23,11 @@ The Esri Roads and Highways address management tools support the ArcGIS for Loca
 
 ## Requirements
 
-* Esri Roads and Highways 10.4 or later
-* ArcGIS Desktop 10.4 or later
-* ArcGIS Server 10.4 or later
+* Esri Roads and Highways 10.4
+* ArcGIS Desktop 10.4
+* ArcGIS Server 10.4
 * Web server: Microsoft Internet Information Services (IIS)
-* Web browser: Chrome, Firefox, Safari, IE 9+
+* Web browser: Chrome, Firefox, IE 10+
 
 ## Resources
 
