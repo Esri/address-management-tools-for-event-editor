@@ -1436,8 +1436,10 @@ define([
                     this._standby.show();
                     var queryUrl = utils.appendUrlPath(this._mapManager.lrsMapLayerConfig.url, "/" + this._selectedEventLayer.id);
                     new QueryTask(queryUrl).execute(query).then(lang.hitch(this, function(featureSet){
-                        if (this._standby) {
-                            this._standby.hide();
+                        if (featureSet.features.length == 0 || array.indexOf(this._addressConfig.blockRangeLayer.copyFields, this._addressConfig.blockRangeLayer.fullStreetNameField) == -1) {
+                            if (this._standby) {
+                                this._standby.hide();
+                            }
                         }
                         if (featureSet.features.length > 0) {
                             var feature = featureSet.features[0];
@@ -1479,9 +1481,10 @@ define([
                     this._standby.show();
                     var queryUrl = utils.appendUrlPath(this._mapManager.lrsMapLayerConfig.url, "/" + this._selectedEventLayer.id);
                     new QueryTask(queryUrl).execute(query).then(lang.hitch(this, function(featureSet){
-                        
-                        if (this._standby) {
-                            this._standby.hide();
+                        if (featureSet.features.length == 0 || array.indexOf(this._addressConfig.blockRangeLayer.copyFields, this._addressConfig.blockRangeLayer.fullStreetNameField) == -1) {
+                            if (this._standby) {
+                                this._standby.hide();
+                            }
                         }
                         if (featureSet.features.length > 0) {
                             var feature = featureSet.features[0];
@@ -2861,21 +2864,48 @@ define([
         
         _populateAttribute: function(fieldName, value){
             // Populate default field values in the grid
-            array.forEach(this._grids, function(grid){
-                grid.store.fetch({
-                    onItem: lang.hitch(this, function(item){
-                        var itemId = grid.store.getValue(item, "id");
-                        var itemInfo = this._editItemInfo[itemId];
-                        if (itemInfo.field.name == fieldName) 
-                            grid.store.setValue(item, "fieldValue", value);
-                    })
-                });
-            }, this);
+       
+            if (fieldName == this._addressConfig.blockRangeLayer.fullStreetNameField) {
+                if (this._addressConfig.masterStreetNameTable && this._addressConfig.masterStreetNameTable.attributeMapping) {
+                    this._addressTask.populateAttributesFromMasterStreetTable(this._selectedEventLayer, value).then(lang.hitch(this, function(result) {
+                        if (this._standby) {
+                            this._standby.hide();
+                        }
+                        array.forEach(this._grids, function(grid) {
+                            grid.store.fetch({
+                                onItem : lang.hitch(this, function(item) {
+                                    var itemId = grid.store.getValue(item, "id");
+                                    var itemInfo = this._editItemInfo[itemId];
+                                    if (itemInfo.field.name == fieldName)
+                                        grid.store.setValue(item, "fieldValue", value);
+                                })
+                            });
+                        }, this);
+                        if (result.attributes) {
+                            for (var field in result.attributes) {
+                                var fieldValue = result.attributes[field];
+                                this._populateAttribute(field, fieldValue);
+                            }
+                        }
+                    }));
+                }
+            } else {
+                array.forEach(this._grids, function(grid) {
+                    grid.store.fetch({
+                        onItem : lang.hitch(this, function(item) {
+                            var itemId = grid.store.getValue(item, "id");
+                            var itemInfo = this._editItemInfo[itemId];
+                            if (itemInfo.field.name == fieldName)
+                                grid.store.setValue(item, "fieldValue", value);
+                        })
+                    });
+                }, this);
+            }
             // Refresh the grids
-            array.forEach(this._grids, function(g){
+            array.forEach(this._grids, function(g) {
                 g.update();
             }, this);
-            
+
         },
         
         _autoPopulateAttribute:function(fieldName, value){
