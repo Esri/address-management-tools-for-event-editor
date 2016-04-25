@@ -126,6 +126,7 @@ return declare("roads.addressManagement.Fishbone", null, {
         },
    
    getFishboneAtPoint:function(mapClickPoint){
+       this._graphicsLayer.clear();
        this._addressTask.queryBlockRangesAtPoint(mapClickPoint).then(lang.hitch(this, function(featureSet){
            var features = featureSet.features;
            var found = false;

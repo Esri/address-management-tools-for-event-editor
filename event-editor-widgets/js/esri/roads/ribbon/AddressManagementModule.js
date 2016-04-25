@@ -452,20 +452,9 @@ return declare("roads.ribbon.AddressManagementModule", [RibbonModule], {
         return deferred;
     },
     
-    
-   
-        _drawEnd: function(geometry) {
-            this._fishboneWidget.getFishboneAtPoint(geometry);
-            var selectionManager = this.ribbon.mapManager.selectionManager;
-            if (selectionManager._activeTool) {
-                this.ribbon._setVisualState(this.ribbon._selectBlockRangeFishbone, false, false);
-            } else {
-                this.ribbon._setVisualState(this.ribbon._selectBlockRangeFishbone, true, false);
-            }
-
-            selectionManager.cancelDraw();
-            selectionManager.activateDefaultTool();
-        },
+    _drawEnd: function(geometry) {
+        this._fishboneWidget.getFishboneAtPoint(geometry);
+    },
 
     
     _drawFishboneGraphics:function(){
