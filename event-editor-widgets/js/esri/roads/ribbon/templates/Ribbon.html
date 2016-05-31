@@ -7,7 +7,7 @@
       <!-- Navigate group -->
       <div>
         <span>${bundle.map.navigate.label}</span>
-        <div class="esriRibbonLargeButton" dojoAttachPoint="_panButton" title="${bundle.map.navigate.panTooltip}" data-ribbon="mapNavPan">
+        <div class="esriRibbonLargeButton" dojoAttachPoint="_panButton" title="${bundle.map.navigate.panTooltip}" data-ribbon="mapNavPan" data-banner-btn="bannerPanBtn">
           <img src="img/pan32.png"/> ${bundle.map.navigate.pan}
         </div>
         <div class="esriRibbonPanel">
@@ -21,10 +21,10 @@
             <div class="esriRibbonSmallButton" dojoAttachPoint="_zoomNextButton" title="${bundle.map.navigate.zoomNextTooltip}" data-ribbon="mapNavZoomNext">
               <img src="img/zoomNext.png"/>
             </div>
-            <div class="esriRibbonSmallButton" dojoAttachPoint="_zoomInButton" title="${bundle.map.navigate.zoomInTooltip}" data-ribbon="mapNavZoomIn">
+            <div class="esriRibbonSmallButton" dojoAttachPoint="_zoomInButton" title="${bundle.map.navigate.zoomInTooltip}" data-ribbon="mapNavZoomIn" data-banner-btn="bannerZoomInBtn">
               <img src="img/zoomIn16.png"/>
             </div>
-            <div class="esriRibbonSmallButton" dojoAttachPoint="_zoomOutButton" title="${bundle.map.navigate.zoomOutTooltip}" data-ribbon="mapNavZoomOut">
+            <div class="esriRibbonSmallButton" dojoAttachPoint="_zoomOutButton" title="${bundle.map.navigate.zoomOutTooltip}" data-ribbon="mapNavZoomOut" data-banner-btn="bannerZoomOutBtn">
               <img src="img/zoomOut16.png"/>
             </div>
           </div>
@@ -227,13 +227,13 @@
             <div dojoType="dijit.form.DropDownButton" class="esriRibbonSmallButton" title="${bundle.edit.selection.selectionMethodTooltip}" dojoAttachPoint="_selectionMethod">
               <span><img id="imgSelectionMethod" src="img/selectionLayerCreate16.png"/></span>
               <div dojoType="dijit.Menu">
-                <div dojoType="dijit.MenuItem" data-ribbon="selectionMethodNew" iconClass="iconButton createNewSelectionIcon">
+                <div dojoType="dijit.MenuItem" data-ribbon="selectionMethodNew" iconClass="iconButton createNewSelectionIcon" dojoAttachPoint="_selectionMethodNewMenu">
                   ${bundle.edit.selection.newSelection}
                 </div>
-                <div dojoType="dijit.MenuItem" data-ribbon="selectionMethodAdd" iconClass="iconButton appendSelectionIcon">
+                <div dojoType="dijit.MenuItem" data-ribbon="selectionMethodAdd" iconClass="iconButton appendSelectionIcon" dojoAttachPoint="_selectionMethodAddMenu">
                   ${bundle.edit.selection.addToSelection}
                 </div>
-                <div dojoType="dijit.MenuItem" data-ribbon="selectionMethodRemove" iconClass="iconButton removeSelectionIcon">
+                <div dojoType="dijit.MenuItem" data-ribbon="selectionMethodRemove" iconClass="iconButton removeSelectionIcon" dojoAttachPoint="_selectionMethodRemoveMenu">
                   ${bundle.edit.selection.removeFromSelection}
                 </div>
               </div>
@@ -310,9 +310,7 @@
               </div>
           </div>
         </div>
-
       </div>
-
     </div>
   </div>
 

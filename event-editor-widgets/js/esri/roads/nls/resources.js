@@ -1,6 +1,6 @@
 define({root:{
     build: "[BUILD]",
-    version: "10.4",
+    version: "10.4.1",
     app: {
         title: "Event Editor",
         helpUrl: "http://resources.arcgis.com/en/help/main/10.2/index.html#/Overview_of_the_Roadway_Characteristics_Editor_user_guide/02230000004v000000/"
