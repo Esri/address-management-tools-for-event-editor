@@ -45,7 +45,6 @@ define([
     array, connect, declare, lang, win,Deferred, xhr, DeferredList, domConstruct, domStyle, MenuItem, Standby, Draw, QueryTask, FeatureLayer, 
     urlUtils, RibbonModule, Fishbone, AddressManagementTask, ConflictTask, serviceInfoCache, utils, layerUtils, versionUtils, mapUtils, bundle, bundle1
 ) {
-
     /*
      * Ribbon module for address management tools.
      */
@@ -58,14 +57,31 @@ define([
     })();
 
     (function() {
+        var oldApplyGDBVersion = mapUtils.prototype._applyGDBVersion;
         mapUtils.extend({
-
             // The different kind of services a layer can come from and we should apply the gdb version to
             serviceTypes : {
                 LRS : "LRS",
                 REDLINE : "REDLINE",
                 MASTERSTREETTABLE : "MASTERSTREETTABLE",
                 SITEADDRESSPOINT : "SITEADDRESSPOINT"
+            },
+
+            _applyGDBVersion : function(config) {
+                // Call the old/super method
+                lang.isFunction(oldApplyGDBVersion) ? oldApplyGDBVersion.apply(this, arguments) : this.inherited(arguments);
+
+                // Look through other operational layers
+                var version = config.gdbVersion;
+                array.forEach(this.webMapData.operationalLayers, function(operationalLayer, index) {
+                    if (operationalLayer.url != this.lrsMapLayerConfig.url && 
+                       (this._matchesMasterStreetTableAddressServiceUrl(operationalLayer.url) || 
+                        this._matchesSiteAddressPointAddressServiceUrl(operationalLayer.url))) {
+                        if (lang.isFunction(operationalLayer.layerObject.setGDBVersion)) {
+                            operationalLayer.layerObject.setGDBVersion(version);
+                        }
+                    }
+                }, this);
             },
 
             _setTaskGDBVersion : function(taskClass, config) {
@@ -219,7 +235,7 @@ define([
              * Determines if the specified URL is based on Addressing map or feature service.
              */
             _matchesMasterStreetTableAddressServiceUrl : function(url) {
-                if (!this.addressInfo.masterStreetNameInfo.serviceLayer) {
+                if (!this.addressInfo.masterStreetNameInfo || !this.addressInfo.masterStreetNameInfo.serviceLayer) {
                     return false;
                 }
                 var masterStreetNameMapServiceUrl = urlUtils.urlToObject(this.addressInfo.masterStreetNameInfo.serviceLayer.url).path;
@@ -227,7 +243,7 @@ define([
             },
 
             _matchesSiteAddressPointAddressServiceUrl : function(url) {
-                if (!this.addressInfo.siteAddressPointsInfo.serviceLayer) {
+                if (!this.addressInfo.siteAddressPointsInfo || !this.addressInfo.siteAddressPointsInfo.serviceLayer) {
                     return false;
                 }
                 var siteAddressPointMapServiceUrl = urlUtils.urlToObject(this.addressInfo.siteAddressPointsInfo.serviceLayer.url).path;
@@ -270,7 +286,10 @@ define([
                         var layerIdSplit = urlSplit[1].split("/");
                         // if the url contains a layer ID then compare it
                         if (layerIdSplit && layerIdSplit.length > 1) {
-                            matchesLayerId = compareLayerId == layerIdSplit[1];
+                            layerIdSplit = layerIdSplit[1].split("?");
+                            if (layerIdSplit && layerIdSplit.length > 0) {
+                                matchesLayerId = compareLayerId == layerIdSplit[0];
+                            }
                         }
                     }
                 }
@@ -799,5 +818,4 @@ define([
         }
     });
     // end declare
-
 });  // end define
