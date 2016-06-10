@@ -118,7 +118,7 @@ define([
                 var serviceTypes = this.serviceTypes;
                 array.forEach(layerIds, function(graphicsLayerId) {
                     var layer = this.map.getLayer(graphicsLayerId);
-                    if ( layer instanceof FeatureLayer && (this._matchesLrsServiceUrl(layer.url) || this._matchesRedlineServiceUrl(layer.url) || this._matchesMasterStreetTableAddressServiceUrl(url) || this._matchesSiteAddressPointAddressServiceUrl(url)) && layer.setGDBVersion) {
+                    if ( layer instanceof FeatureLayer && (this._matchesLrsServiceUrl(layer.url) || this._matchesRedlineServiceUrl(layer.url) || this._matchesMasterStreetTableAddressServiceUrl(layer.url) || this._matchesSiteAddressPointAddressServiceUrl(layer.url)) && layer.setGDBVersion) {
                         // Only set the GDB version if the version parameter is
                         // not the same as the version in the MXD that's published.
                         // Workaround for core bug; still waiting for NIM# from core.
@@ -131,7 +131,7 @@ define([
                         } else if (this._matchesRedlineServiceUrl(layer.url)) {
                             // Documented that the redline layer (if published in a separate service from the other LRS layers) should be published using the same GDB version as the LRS map service. (TFS 48200)
                             serviceType = serviceTypes.REDLINE;
-                        } else if (this._matchesMasterStreetTableAddressServiceUrl(url)) {
+                        } else if (this._matchesMasterStreetTableAddressServiceUrl(layer.url)) {
                             serviceType = serviceTypes.MASTERSTREETTABLE;
                         } else {
                             serviceType = serviceTypes.SITEADDRESSPOINT;
