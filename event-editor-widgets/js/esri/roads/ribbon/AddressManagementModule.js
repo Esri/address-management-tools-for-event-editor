@@ -31,6 +31,7 @@ define([
     "esri/layers/FeatureLayer", 
     "esri/urlUtils", 
     "roads/ribbon/RibbonModule",
+    "roads/ribbon/VersioningModule",
     "roads/addressManagement/Fishbone",
     "roads/addressManagement/tasks/AddressManagementTask",
     "roads/tasks/ConflictTask",
@@ -43,11 +44,15 @@ define([
     "dojo/i18n!roads/addressManagement/nls/res_AddressConflictTask"
 ], function(
     array, connect, declare, lang, win,Deferred, xhr, DeferredList, domConstruct, domStyle, MenuItem, Standby, Draw, QueryTask, FeatureLayer, 
-    urlUtils, RibbonModule, Fishbone, AddressManagementTask, ConflictTask, serviceInfoCache, utils, layerUtils, versionUtils, mapUtils, bundle, bundle1
+    urlUtils, RibbonModule, VersioningModule, Fishbone, AddressManagementTask, ConflictTask, serviceInfoCache, utils, layerUtils, versionUtils, mapUtils, bundle, bundle1
 ) {
     /*
      * Ribbon module for address management tools.
      */
+    
+    (function(){
+        VersioningModule.prototype._queryClassNames = VersioningModule.prototype._queryClassNames.concat(["roads.dijit.FeatureAttributes","roads.addressManagement.AddBlockRange",  "roads.addressManagement.AddSiteAddresses", "roads.addressManagement.AddStreetNames"]);
+    })();
 
     (function() {
         layerUtils.getFeatureServerUrl = function(serviceUrl, params) {
