@@ -28,7 +28,7 @@
   "arrowHead": { "style": "triangle", "color": "#00ffff", "size": 20, "outline": { "style": "solid", "color": "#008080", "width": 2 } }
   },
  "fishboneSelectionSymbols":{
-  "line": { "style": "solid", "color": "#ff0000", "width": 3 }
+  "line": { "style": "solid", "color": "#0000ff", "width": 3 }
   },
   "polygonLayers": [ 
   { 
