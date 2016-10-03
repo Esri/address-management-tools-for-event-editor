@@ -189,6 +189,7 @@ return declare("roads.addressManagement.Fishbone", null, {
                  if (geometry) {
                    if (location.geometryType == "esriGeometryPoint") {
                      var geometry = new Polyline([[siteAddresses[index].geometry.x, siteAddresses[index].geometry.y], [geometry.x, geometry.y]]);
+                     geometry.setSpatialReference(siteAddresses[index].geometry.spatialReference);
                      var graphic = new esri.Graphic(geometry, this._lineSymbol);
                      this._graphicsLayer.add(graphic);
                    }
