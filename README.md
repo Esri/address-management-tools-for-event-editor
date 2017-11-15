@@ -16,7 +16,6 @@ The Esri Roads and Highways address management tools support the ArcGIS for Loca
 ## Instructions
 
 1. Download this repository as a .zip file and unzip it to your machine.
-2. Ensure that the Event Editor web app has been deployed.  Event Editor is a part of the Esri Roads and Highways product.  Refer to the [deployment guide](http://desktop.arcgis.com/en/arcmap/latest/extensions/roads-and-highways/roadway-characteristics-editor-deployment-guide.htm) for details.
 3. Copy the folders and files from within event-editor-widgets into the folder where you have deployed the Event Editor app.
 4. Rename the sample_address_management.json file to address_management.json, and configure it for your environment.  Change the map layer names, field names, and other settings to match your data.
 5. For more detailed instructions on deploying and using the address management widgets in Event Editor, please read the [user guide](https://github.com/Esri/address-management-tools-for-event-editor/blob/master/address-management-user-guide.pdf?raw=true).
@@ -32,8 +31,7 @@ The Esri Roads and Highways address management tools support the ArcGIS for Loca
 ## Resources
 
 * [User guide](https://github.com/Esri/address-management-tools-for-event-editor/blob/master/address-management-user-guide.pdf?raw=true) (PDF) for deploying and using the address management tools
-* [Event Editor user guide](http://desktop.arcgis.com/en/arcmap/latest/extensions/roads-and-highways/roadway-characteristics-editor-user-guide.htm)
-* Learn more about [Esri Roads and Highways](http://desktop.arcgis.com/en/arcmap/latest/extensions/roads-and-highways/what-is-roads-and-highways.htm)
+* Learn more about [Esri Roads and Highways](http://desktop.arcgis.com/en/arcmap/10.4/extensions/roads-and-highways/what-is-roads-and-highways.htm)
 
 ## Issues
 
